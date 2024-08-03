@@ -1,13 +1,19 @@
 const express = require("express");
-
+const { DbConection } = require("./Db/db.conection");
+const router = require("./routes/user.routes");
 const app = express();
+const PORT = 3005;
 
-app.get("/", (req, res) => {
-    return res.send("Hello From Home Page!");
-})
+//DbConection..
+DbConection()
+.then(() => console.log("MongoDb Conected!"))
+.catch((err) => console.log("Its not Conected", err))
 
-app.get("/About", (req, res) => {
-    return res.send("Hello from about page!");
-})
+//middleware..
+app.use(express.json());
 
-app.listen(8000, () => console.log("Server has stated!"))
+//routes..
+app.use("/api/user", router)
+
+
+app.listen(PORT, () => console.log(`Server has stated in PORT : ${PORT}`));
